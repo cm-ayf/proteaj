@@ -110,6 +110,18 @@
     <pathelement location="${basedir}/lib/javassist.jar"/>
   </path>
   
+  <path id="library.lsp4j:lsp4j:0.22.0.classpath">
+    <pathelement location="${basedir}/lib/org.eclipse.lsp4j-0.22.0.jar"/>
+  </path>
+
+  <path id="library.jsonrpc:jsonrpc:0.22.0.classpath">
+    <pathelement location="${basedir}/lib/org.eclipse.lsp4j.jsonrpc-0.22.0.jar"/>
+  </path>
+
+  <path id="library.gson:gson:2.10.1.classpath">
+    <pathelement location="${basedir}/lib/gson-2.10.1.jar"/>
+  </path>
+
   <!-- Modules -->
   
   <import file="${basedir}/module_proteaj.xml"/>

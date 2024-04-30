@@ -7,25 +7,37 @@ public class ErrorList {
     errors = new HashMap<String, List<CompileError>>();
   }
 
-  public static void addErrors (CompileErrors es) {
-    for (CompileError e : es.getErrors()) addError(e);
+  public static List<CompileError> remove(String file) {
+    return errors.remove(file);
+  }
+
+  public static void addErrors(CompileErrors es) {
+    for (CompileError e : es.getErrors())
+      addError(e);
   }
 
   public static void addError(CompileError e) {
     String file = e.getFile();
 
-    if(errors.containsKey(file)) {
+    if (errors.containsKey(file)) {
       errors.get(file).add(e);
-    }
-    else {
+    } else {
       List<CompileError> es = new ArrayList<CompileError>();
       es.add(e);
       errors.put(file, es);
     }
   }
 
+  public static boolean hasError(String file) {
+    return errors.containsKey(file);
+  }
+
   public static boolean hasError() {
-    return ! errors.isEmpty();
+    return !errors.isEmpty();
+  }
+
+  public static List<CompileError> getErrors(String file) {
+    return errors.get(file);
   }
 
   public static void printAllErrors() {
@@ -33,17 +45,19 @@ public class ErrorList {
     List<Map.Entry<String, List<CompileError>>> es = new ArrayList<>(errors.entrySet());
     Collections.sort(es, (e1, e2) -> e1.getKey().compareTo(e2.getKey()));
 
-    for(Map.Entry<String, List<CompileError>> entry : es) {
-      assert ! entry.getValue().isEmpty();
+    for (Map.Entry<String, List<CompileError>> entry : es) {
+      assert !entry.getValue().isEmpty();
 
       Collections.sort(entry.getValue(), CompileErrorComparator.instance);
 
       System.err.println('[' + entry.getKey() + ']');
 
-      for(CompileError e : entry.getValue()) {
+      for (CompileError e : entry.getValue()) {
         num++;
-        if(e.getLine() != 0) System.err.println("line " + e.getLine() + " : << " + e.getKind() + " >> " + e.getMessage());
-        else System.err.println("<< " + e.getKind() + " >> " + e.getMessage());
+        if (e.getLine() != 0)
+          System.err.println("line " + e.getLine() + " : << " + e.getKind() + " >> " + e.getMessage());
+        else
+          System.err.println("<< " + e.getKind() + " >> " + e.getMessage());
       }
     }
     System.err.println(num + " errors");
@@ -60,4 +74,3 @@ enum CompileErrorComparator implements Comparator<CompileError> {
     }
   }
 }
-

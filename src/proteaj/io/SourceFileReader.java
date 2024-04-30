@@ -4,6 +4,8 @@ import proteaj.error.FileIOError;
 
 import java.io.*;
 
+import org.eclipse.lsp4j.TextDocumentItem;
+
 public class SourceFileReader {
   public SourceFileReader(File file) throws FileIOError {
     try {
@@ -11,6 +13,17 @@ public class SourceFileReader {
       c = reader.read();
       line = 1;
       filePath = file.getPath();
+    } catch (IOException e) {
+      throw new FileIOError("can't read source file", filePath, 0);
+    }
+  }
+
+  public SourceFileReader(TextDocumentItem doc) throws FileIOError {
+    try {
+      reader = new BufferedReader(new StringReader(doc.getText()));
+      c = reader.read();
+      line = 1;
+      filePath = doc.getUri();
     } catch (IOException e) {
       throw new FileIOError("can't read source file", filePath, 0);
     }
@@ -34,9 +47,10 @@ public class SourceFileReader {
 
   public char next() throws FileIOError {
     try {
-      char ret = (char)c;
+      char ret = (char) c;
       c = reader.read();
-      if(ret == '\n') line++;
+      if (ret == '\n')
+        line++;
       return ret;
     } catch (IOException e) {
       throw new FileIOError("file read error", filePath, line);
@@ -44,8 +58,9 @@ public class SourceFileReader {
   }
 
   public void nextLine() throws FileIOError {
-    while(hasNext()) {
-      if(next() == '\n') break;
+    while (hasNext()) {
+      if (next() == '\n')
+        break;
     }
   }
 

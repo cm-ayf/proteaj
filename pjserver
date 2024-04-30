@@ -1,0 +1,5 @@
+#!/bin/bash
+
+script_dir=`dirname $0`
+java -classpath ${script_dir}/lib/javassist.jar:${script_dir}/lib/args4j-2.0.28.jar:${script_dir}/lib/org.eclipse.lsp4j-0.22.0.jar:${script_dir}/lib/org.eclipse.lsp4j.jsonrpc-0.22.0.jar:${script_dir}/lib/gson-2.10.1.jar:${script_dir}/out/production/proteaj:${script_dir}/bin proteaj.Server -classpath ${script_dir}/bin
+

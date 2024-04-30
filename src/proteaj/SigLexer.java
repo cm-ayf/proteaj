@@ -17,8 +17,10 @@ public class SigLexer {
   }
 
   public void init() {
-    if(tokens.get(0).isVisible()) current = 0;
-    else current = getNextVisibleToken(0);
+    if (tokens.get(0).isVisible())
+      current = 0;
+    else
+      current = getNextVisibleToken(0);
   }
 
   public int getPos() {
@@ -34,15 +36,19 @@ public class SigLexer {
   }
 
   public Token lookahead() {
-    if(hasNext()) return tokens.get(current);
-    else return eof;
+    if (hasNext())
+      return tokens.get(current);
+    else
+      return eof;
   }
 
   public Token lookahead(int i) {
     int pos = current;
-    while(pos < tokens.size()) {
-      if(i == 0) return tokens.get(pos);
-      else i--;
+    while (pos < tokens.size()) {
+      if (i == 0)
+        return tokens.get(pos);
+      else
+        i--;
 
       pos = getNextVisibleToken(pos);
     }
@@ -57,7 +63,7 @@ public class SigLexer {
   }
 
   public Token next(int i) {
-    while(i > 0) {
+    while (i > 0) {
       next();
       i--;
     }
@@ -67,9 +73,10 @@ public class SigLexer {
   public void nextLine() {
     int line = tokens.get(current).getLine();
 
-    while(hasNext()) {
+    while (hasNext()) {
       next();
-      if(lookahead().getLine() > line) break;
+      if (lookahead().getLine() > line)
+        break;
     }
   }
 
@@ -79,7 +86,7 @@ public class SigLexer {
 
     StringBuilder buf = new StringBuilder();
 
-    for(int i = begin; i <= end; i++) {
+    for (int i = begin; i <= end; i++) {
       buf.append(tokens.get(i));
     }
 
@@ -94,9 +101,11 @@ public class SigLexer {
   private int getNextVisibleToken(int i) {
     i++;
 
-    while(i < tokens.size()) {
-      if(tokens.get(i).isVisible()) break;
-      else i++;
+    while (i < tokens.size()) {
+      if (tokens.get(i).isVisible())
+        break;
+      else
+        i++;
     }
     return i;
   }
@@ -104,21 +113,29 @@ public class SigLexer {
   private List<Token> tokenizeAll(SourceFileReader reader) throws FileIOError {
     List<Token> tokens = new ArrayList<>();
 
-    while(reader.hasNext()) try {
-      int c = reader.lookahead();
+    while (reader.hasNext())
+      try {
+        int c = reader.lookahead();
 
-      if(isWhitespace(c)) tokens.add(tokenizeWhiteSpaces(reader));
-      else if(isJavaIdentifierStart(c)) tokens.add(tokenizeIdentifier(reader));
-      else if(isDigit(c)) tokens.add(tokenizeIntLiteral(reader));
-      else if(c == '\'') tokens.add(tokenizeCharLiteral(reader));
-      else if(c == '\"') tokens.add(tokenizeStringLiteral(reader));
-      else if(c == '/')  tokens.add(tokenizeCommentOrSlash(reader));
-      else tokens.add(tokenizeSymbol(reader));
-    } catch (LexicalError e) {
-      ErrorList.addError(e);
-      tokens.add(new BadToken(reader.getLine()));
-      reader.nextLine();
-    }
+        if (isWhitespace(c))
+          tokens.add(tokenizeWhiteSpaces(reader));
+        else if (isJavaIdentifierStart(c))
+          tokens.add(tokenizeIdentifier(reader));
+        else if (isDigit(c))
+          tokens.add(tokenizeIntLiteral(reader));
+        else if (c == '\'')
+          tokens.add(tokenizeCharLiteral(reader));
+        else if (c == '\"')
+          tokens.add(tokenizeStringLiteral(reader));
+        else if (c == '/')
+          tokens.add(tokenizeCommentOrSlash(reader));
+        else
+          tokens.add(tokenizeSymbol(reader));
+      } catch (LexicalError e) {
+        ErrorList.addError(e);
+        tokens.add(new BadToken(reader.getLine()));
+        reader.nextLine();
+      }
 
     return tokens;
   }
@@ -129,7 +146,7 @@ public class SigLexer {
     int line = reader.getLine();
     StringBuilder buf = new StringBuilder();
 
-    while(isWhitespace(reader.lookahead())) {
+    while (isWhitespace(reader.lookahead())) {
       buf.append(reader.next());
     }
 
@@ -144,7 +161,7 @@ public class SigLexer {
 
     buf.append(reader.next());
 
-    while(isJavaIdentifierPart(reader.lookahead())) {
+    while (isJavaIdentifierPart(reader.lookahead())) {
       buf.append(reader.next());
     }
 
@@ -157,7 +174,7 @@ public class SigLexer {
     int line = reader.getLine();
     StringBuilder buf = new StringBuilder();
 
-    while(isDigit(reader.lookahead())) {
+    while (isDigit(reader.lookahead())) {
       buf.append(reader.next());
     }
 
@@ -170,18 +187,18 @@ public class SigLexer {
     int line = reader.getLine();
     reader.next();
 
-    if(reader.hasNext()) {
+    if (reader.hasNext()) {
       char c = reader.next();
 
-      if(c == '\n' || c == '\'') {
+      if (c == '\n' || c == '\'') {
         throw new LexicalError("invalid char literal", filePath, line);
       }
 
-      if(c == '\\') {
+      if (c == '\\') {
         c = readEscapedChar(reader);
       }
 
-      if(reader.lookahead() == '\'') {
+      if (reader.lookahead() == '\'') {
         reader.next();
         return new CharLiteral(c, line);
       }
@@ -198,14 +215,18 @@ public class SigLexer {
 
     reader.next();
 
-    while(reader.hasNext()) {
+    while (reader.hasNext()) {
       char ch = reader.next();
 
-      switch(ch) {
-        case '\n': throw new LexicalError("String literal is not properly closed by a double-quote", filePath, line);
-        case '\"': return new StringLiteral(buffer.toString(), line);
-        case '\\': ch = readEscapedChar(reader);
-        default: buffer.append(ch);
+      switch (ch) {
+        case '\n':
+          throw new LexicalError("String literal is not properly closed by a double-quote", filePath, line);
+        case '\"':
+          return new StringLiteral(buffer.toString(), line);
+        case '\\':
+          ch = readEscapedChar(reader);
+        default:
+          buffer.append(ch);
       }
     }
 
@@ -219,33 +240,38 @@ public class SigLexer {
     reader.next();
 
     // line comment
-    if(reader.lookahead() == '/') {
+    if (reader.lookahead() == '/') {
       reader.next();
-      while(reader.hasNext()) {
-        if(reader.next() == '\n') break;
+      while (reader.hasNext()) {
+        if (reader.next() == '\n')
+          break;
       }
       return new WhiteSpaces("\n", line);
     }
     // block comment
-    else if(reader.lookahead() == '*') {
+    else if (reader.lookahead() == '*') {
       int count = 0;
       reader.next();
-      while(reader.hasNext()) {
+      while (reader.hasNext()) {
         char ch = reader.next();
-        if(ch == '\n') count++;
-        else if(ch == '*' && reader.lookahead() == '/') {
+        if (ch == '\n')
+          count++;
+        else if (ch == '*' && reader.lookahead() == '/') {
           reader.next();
-          if(count == 0) return new WhiteSpaces(" ", line);
+          if (count == 0)
+            return new WhiteSpaces(" ", line);
 
           StringBuilder buf = new StringBuilder();
-          for(int i = 0; i < count; i++) buf.append('\n');
+          for (int i = 0; i < count; i++)
+            buf.append('\n');
           return new WhiteSpaces(buf.toString(), line);
         }
       }
       throw new LexicalError("end of comment is not found", filePath, line);
     }
     // slash
-    else return new Symbol('/', line);
+    else
+      return new Symbol('/', line);
   }
 
   private Symbol tokenizeSymbol(SourceFileReader reader) throws FileIOError {
@@ -261,25 +287,33 @@ public class SigLexer {
     assert reader.hasNext();
     char ch = reader.next();
 
-    if(escapedChars.containsKey(ch)) return escapedChars.get(ch);
-    else if ('0' <= ch && ch <= '7') return readCharCode8(ch, reader);
-    else if (ch == 'u') return readCharCode16(reader);
-    else throw new LexicalError("invalid escape sequence \"\\" + ch + "\"", filePath, reader.getLine());
+    if (escapedChars.containsKey(ch))
+      return escapedChars.get(ch);
+    else if ('0' <= ch && ch <= '7')
+      return readCharCode8(ch, reader);
+    else if (ch == 'u')
+      return readCharCode16(reader);
+    else
+      throw new LexicalError("invalid escape sequence \"\\" + ch + "\"", filePath, reader.getLine());
   }
 
-  private char readCharCode8 (char ch, SourceFileReader reader) throws FileIOError, LexicalError {
+  private char readCharCode8(char ch, SourceFileReader reader) throws FileIOError, LexicalError {
     int code = digit(ch, 8);
 
     int n = reader.lookahead();
-    if (!('0' <= n && n <= '7')) return (char)code;
+    if (!('0' <= n && n <= '7'))
+      return (char) code;
     code = code * 8 + digit(reader.next(), 8);
 
     n = reader.lookahead();
-    if (!('0' <= n && n <= '7')) return (char)code;
+    if (!('0' <= n && n <= '7'))
+      return (char) code;
     code = code * 8 + digit(reader.next(), 8);
 
-    if (0 <= code && code <= 0x00ff) return (char)code;
-    else throw new LexicalError("invalid octal char code", filePath, reader.getLine());
+    if (0 <= code && code <= 0x00ff)
+      return (char) code;
+    else
+      throw new LexicalError("invalid octal char code", filePath, reader.getLine());
   }
 
   private char readCharCode16(SourceFileReader reader) throws FileIOError, LexicalError {
@@ -294,7 +328,7 @@ public class SigLexer {
       }
       throw new LexicalError("invalid char code", filePath, reader.getLine());
     }
-    return (char)code;
+    return (char) code;
   }
 
   private int current;

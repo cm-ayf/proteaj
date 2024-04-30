@@ -6,7 +6,7 @@
   <property name="module.jdk.bin.proteaj" value="${project.jdk.bin}"/>
   <property name="module.jdk.classpath.proteaj" value="${project.jdk.classpath}"/>
   
-  <property name="compiler.args.proteaj" value="-encoding UTF-8 -source 8 ${compiler.args}"/>
+  <property name="compiler.args.proteaj" value="-encoding UTF-8 -source 21 ${compiler.args}"/>
   
   <property name="proteaj.output.dir" value="${module.proteaj.basedir}/out/production/proteaj"/>
   <property name="proteaj.testoutput.dir" value="${module.proteaj.basedir}/out/test/proteaj"/>
@@ -20,6 +20,9 @@
     <path refid="library.javassist.classpath"/>
     <path refid="library.bin.classpath"/>
     <path refid="library.args4j:args4j:2.0.28.classpath"/>
+    <path refid="library.lsp4j:lsp4j:0.22.0.classpath"/>
+    <path refid="library.jsonrpc:jsonrpc:0.22.0.classpath"/>
+    <path refid="library.gson:gson:2.10.1.classpath"/>
   </path>
   
   <path id="proteaj.runtime.production.module.classpath">
@@ -27,6 +30,9 @@
     <path refid="library.javassist.classpath"/>
     <path refid="library.bin.classpath"/>
     <path refid="library.args4j:args4j:2.0.28.classpath"/>
+    <path refid="library.lsp4j:lsp4j:0.22.0.classpath"/>
+    <path refid="library.jsonrpc:jsonrpc:0.22.0.classpath"/>
+    <path refid="library.gson:gson:2.10.1.classpath"/>
   </path>
   
   <path id="proteaj.module.classpath">
@@ -35,6 +41,9 @@
     <path refid="library.javassist.classpath"/>
     <path refid="library.bin.classpath"/>
     <path refid="library.args4j:args4j:2.0.28.classpath"/>
+    <path refid="library.lsp4j:lsp4j:0.22.0.classpath"/>
+    <path refid="library.jsonrpc:jsonrpc:0.22.0.classpath"/>
+    <path refid="library.gson:gson:2.10.1.classpath"/>
   </path>
   
   <path id="proteaj.runtime.module.classpath">
@@ -43,6 +52,9 @@
     <path refid="library.javassist.classpath"/>
     <path refid="library.bin.classpath"/>
     <path refid="library.args4j:args4j:2.0.28.classpath"/>
+    <path refid="library.lsp4j:lsp4j:0.22.0.classpath"/>
+    <path refid="library.jsonrpc:jsonrpc:0.22.0.classpath"/>
+    <path refid="library.gson:gson:2.10.1.classpath"/>
   </path>
   
   
